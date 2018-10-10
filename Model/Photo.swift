@@ -7,16 +7,21 @@
 //
 
 import Foundation
+import UIKit
 
-class Photo {
+class Photo: Codable {
     
     let identifier: String
     let dateCreated: Date
+    let thumbnailImage: Data?
+    let photoImage: Data?
     
-    init(identifier: String, dateCreated: Date = Date()) {
+    init(identifier: String, dateCreated: Date = Date(), thumbnailImage: Data?, photoImage: Data?) {
         
         self.identifier = identifier
         self.dateCreated = dateCreated
+        self.thumbnailImage = thumbnailImage
+        self.photoImage = photoImage
     }
 }
 
