@@ -11,10 +11,17 @@ import UIKit
 
 class Photo: Codable {
     
-    let identifier: String
-    let dateCreated: Date
-    let thumbnailImage: Data?
-    let photoImage: Data?
+    var identifier: String
+    var dateCreated: Date
+    var thumbnailImage: Data?
+    var photoImage: Data?
+    
+    var dateCreatedAsString: String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        formatter.timeStyle = .short
+        return formatter.string(from: dateCreated)
+    }
     
     init(identifier: String, dateCreated: Date = Date(), thumbnailImage: Data?, photoImage: Data?) {
         
