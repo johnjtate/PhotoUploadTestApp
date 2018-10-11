@@ -17,8 +17,8 @@ class PhotoAssetsTableViewController: UITableViewController {
     // time period during which photos should be fetched
     var startTime: Date = Date()
     var endTime: Date = Date()
-    // local source of truth for the images
-    var imageData: [Data] = []
+    // local source of truth for the image data
+    var photoImageData: [Data] = []
     
     // MARK: Lifecycle
     
@@ -58,10 +58,12 @@ class PhotoAssetsTableViewController: UITableViewController {
         return cell
     }
     
-    // MARK: - Fetch Function
+    // MARK: - Fetch Functions
     
     func fetchPhotosInDateRange(startDate: Date, endDate: Date) {
         
+        // empty the source of truth to avoid multiple fetches putting in the same images
+        PhotoController.shared.photos = []
         let imageManager = PHImageManager.default()
         
         let requestOptions = PHImageRequestOptions()
@@ -69,6 +71,8 @@ class PhotoAssetsTableViewController: UITableViewController {
         requestOptions.isSynchronous = true
         // allows photo stored in iCloud to be fetched
         requestOptions.isNetworkAccessAllowed = true
+        // chooses high-quality format
+        requestOptions.deliveryMode = .highQualityFormat
         
         // fetch the images between the start and end date
         let fetchOptions = PHFetchOptions()
@@ -76,7 +80,7 @@ class PhotoAssetsTableViewController: UITableViewController {
         fetchOptions.predicate = NSPredicate(format: "creationDate > %@ AND creationDate < %@", startDate as CVarArg, endDate as CVarArg)
 
         // empty out the source of truth
-        imageData = []
+        photoImageData = []
         
         // fetch the image metadata
         let fetchResult: PHFetchResult<PHAsset>
@@ -86,19 +90,24 @@ class PhotoAssetsTableViewController: UITableViewController {
             // perform the image request
             for index in 0..<fetchResult.count {
                 
-                let asset  = fetchResult.object(at: index)
+                let asset = fetchResult.object(at: index)
                 // request image data
                 imageManager.requestImageData(for: asset, options: requestOptions) { (imageData, string, orientation, info) in
                     
+                    // append the photo image data to the local array
                     if let imageData = imageData {
-                        self.imageData += [imageData]
+                        self.photoImageData += [imageData]
                     }
-                    if self.imageData.count == fetchResult.count {
-                        print("image data has been fetched")
+                    // create photo model objects
+                    if let imageData = imageData {
+                        PhotoController.shared.addPhotoFromLibrary(identifier: asset.localIdentifier, dateCreated: asset.creationDate, photoImageData: imageData)
+                    }
+                    
+                    if self.photoImageData.count == fetchResult.count {
+                        print("photo image data has been fetched")
                     }
                 }
             }
-            
         }
     }
 

@@ -20,10 +20,11 @@ class PhotoController {
     // source of truth
     var photos: [Photo] = []
     
-    func addPhotoFromLibrary(identifier: String, dateCreated: Date?) {
+    func addPhotoFromLibrary(identifier: String?, dateCreated: Date?, photoImageData: Data?) {
         
-        let newPhoto = Photo(identifier: identifier, dateCreated: dateCreated ?? Date(), thumbnailImage: nil, photoImage: nil)
+        let newPhoto = Photo(identifier: identifier, dateCreated: dateCreated ?? Date(), photoImageData: photoImageData)
         photos.append(newPhoto)
+        saveToPersistentStorage()
     }
     
     // MARK: Persistence

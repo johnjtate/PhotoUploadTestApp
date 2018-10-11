@@ -11,10 +11,9 @@ import UIKit
 
 class Photo: Codable {
     
-    var identifier: String
+    var identifier: String?
     var dateCreated: Date
-    var thumbnailImage: Data?
-    var photoImage: Data?
+    var photoImageData: Data?
     
     var dateCreatedAsString: String {
         let formatter = DateFormatter()
@@ -23,12 +22,11 @@ class Photo: Codable {
         return formatter.string(from: dateCreated)
     }
     
-    init(identifier: String, dateCreated: Date = Date(), thumbnailImage: Data?, photoImage: Data?) {
+    init(identifier: String?, dateCreated: Date = Date(), photoImageData: Data?) {
         
         self.identifier = identifier
         self.dateCreated = dateCreated
-        self.thumbnailImage = thumbnailImage
-        self.photoImage = photoImage
+        self.photoImageData = photoImageData
     }
 }
 
