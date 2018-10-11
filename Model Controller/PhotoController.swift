@@ -18,7 +18,11 @@ class PhotoController {
     }
     
     // source of truth
-    var photos: [Photo] = []
+    var photos: [Photo] = [] {
+        didSet {
+            print(photos.count)
+        }
+    }
     
     func addPhotoFromLibrary(identifier: String, dateCreated: Date?, photoImageData: Data?) {
         

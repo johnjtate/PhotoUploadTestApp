@@ -59,7 +59,6 @@ class PhotoAssetsTableViewController: UITableViewController {
     }
     
     // MARK: - Fetch Functions
-
     func fetchPhotosInDateRange(startDate: Date, endDate: Date) {
         
         // empty the source of truth to avoid multiple fetches putting in the same images

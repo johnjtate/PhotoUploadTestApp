@@ -162,6 +162,9 @@
                                     <constraint firstItem="gBL-TP-oy3" firstAttribute="top" secondItem="URR-oA-IMN" secondAttribute="top" id="v9G-i8-baj"/>
                                 </constraints>
                                 <size key="customSize" width="80" height="80"/>
+                                <connections>
+                                    <outlet property="thumbnailImageView" destination="gBL-TP-oy3" id="egi-ls-Ixt"/>
+                                </connections>
                             </collectionViewCell>
                         </cells>
                         <connections>
