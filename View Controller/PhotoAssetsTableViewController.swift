@@ -13,32 +13,22 @@ class PhotoAssetsTableViewController: UITableViewController {
 
     // MARK: - Properties
 
-    var allPhotos: PHFetchResult<PHAsset>!
+    var fetchResult: PHFetchResult<PHAsset>!
     // time period during which photos should be fetched
     var startTime: Date = Date()
     var endTime: Date = Date()
-    
-    // MARK: DateFormatter
-    
-    func dateFromString(dateString: String) -> Date? {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd-mm-yyyy"
-        let date = dateFormatter.date(from: dateString)
-        guard let dateToReturn = date else { return nil }
-        return dateToReturn
-    }
+    // local source of truth for the images
+    var imageData: [Data] = []
     
     // MARK: Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        startTime = dateFromString(dateString: "01-10-2018") ?? Date()
-        // create a PHFetchResult object for all photos
-        let allPhotosOptions = PHFetchOptions()
-        allPhotosOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending:    true)]
-        allPhotos = PHAsset.fetchAssets(with: allPhotosOptions)
-        
+        // set start and end times for photo fetches
+        startTime = Date(dateString: "10-01-2018")
+        endTime = Date()
+
         // register a change observer for the photo library (adopting the PHPhotoLibraryChangeObserver protocol in the extension)
         PHPhotoLibrary.shared().register(self)
     }
@@ -70,38 +60,53 @@ class PhotoAssetsTableViewController: UITableViewController {
     
     // MARK: - Fetch Function
     
-    func fetchAllPhotoAssets(from startDate: Date, to endDate: Date) {
+    func fetchPhotosInDateRange(startDate: Date, endDate: Date) {
         
-        // create NSPredicate for options to fetch only within the specified time period
-        let options = PHFetchOptions()
-        options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
-        let predicate = NSPredicate(
-            format: "mediaType == %d",
-            PHAssetMediaType.image.rawValue)
-        options.predicate = predicate
+        let imageManager = PHImageManager.default()
         
-        let result = PHAsset.fetchAssets(with: .image, options: options)
-        for index in 0..<result.count {
-            let asset = result[index]
-            PhotoController.shared.addPhotoFromLibrary(identifier: asset.localIdentifier, dateCreated: asset.creationDate)
-            print(asset.localIdentifier)
-            print("\(String(describing: asset.creationDate))")
+        let requestOptions = PHImageRequestOptions()
+        // allows synchronous calls
+        requestOptions.isSynchronous = true
+        // allows photo stored in iCloud to be fetched
+        requestOptions.isNetworkAccessAllowed = true
+        
+        // fetch the images between the start and end date
+        let fetchOptions = PHFetchOptions()
+        fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
+        fetchOptions.predicate = NSPredicate(format: "creationDate > %@ AND creationDate < %@", startDate as CVarArg, endDate as CVarArg)
+
+        // empty out the source of truth
+        imageData = []
+        
+        // fetch the image metadata
+        let fetchResult: PHFetchResult<PHAsset>
+        fetchResult = PHAsset.fetchAssets(with: PHAssetMediaType.image, options: fetchOptions)
+        // if any fetch results, proceed with the image request
+        if fetchResult.count > 0 {
+            // perform the image request
+            for index in 0..<fetchResult.count {
+                
+                let asset  = fetchResult.object(at: index)
+                // request image data
+                imageManager.requestImageData(for: asset, options: requestOptions) { (imageData, string, orientation, info) in
+                    
+                    if let imageData = imageData {
+                        self.imageData += [imageData]
+                    }
+                    if self.imageData.count == fetchResult.count {
+                        print("image data has been fetched")
+                    }
+                }
+            }
+            
         }
     }
 
     // MARK: - IBActions
     @IBAction func fetchAssetsButtonTapped(_ sender: Any) {
 
-        fetchAllPhotoAssets(from: startTime, to: endTime)
+        fetchPhotosInDateRange(startDate: startTime, endDate: endTime)
         tableView.reloadData()
-    }
-}
-
-extension Date {
-    init?(dateString: String) {
-        let formatter = DateFormatter()
-        guard let date = formatter.date(from: dateString) else { return nil }
-        self = date
     }
 }
 
@@ -113,10 +118,21 @@ extension PhotoAssetsTableViewController: PHPhotoLibraryChangeObserver {
         
         DispatchQueue.main.async {
             // check the allPhotos fetch for changes
-            if let changeDetails = changeInstance.changeDetails(for: self.allPhotos) {
+            if let changeDetails = changeInstance.changeDetails(for: self.fetchResult) {
                  // update the cached fetch result
-                self.allPhotos = changeDetails.fetchResultAfterChanges
+                self.fetchResult = changeDetails.fetchResultAfterChanges
             }
         }
+    }
+}
+
+// MARK: - DateFormatter
+
+extension Date {
+    init(dateString: String) {
+        let dateStringFormatter = DateFormatter()
+        dateStringFormatter.dateFormat = "MM-dd-yyyy"
+        let d = dateStringFormatter.date(from: dateString)!
+        self.init(timeInterval: 0, since: d)
     }
 }
