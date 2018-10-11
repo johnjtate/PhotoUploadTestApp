@@ -20,8 +20,10 @@ class PhotoController {
     // source of truth
     var photos: [Photo] = []
     
-    func addPhotoFromLibrary() {
-        //TODO: need to decide whether to create object with identifier and dateCreated first and later add the thumbnail image and image or create all at once
+    func addPhotoFromLibrary(identifier: String, dateCreated: Date?) {
+        
+        let newPhoto = Photo(identifier: identifier, dateCreated: dateCreated ?? Date(), thumbnailImage: nil, photoImage: nil)
+        photos.append(newPhoto)
     }
     
     // MARK: Persistence

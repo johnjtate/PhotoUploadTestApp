@@ -74,6 +74,7 @@ class PhotoAssetsTableViewController: UITableViewController {
         
         // create NSPredicate for options to fetch only within the specified time period
         let options = PHFetchOptions()
+        options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
         let predicate = NSPredicate(
             format: "mediaType == %d",
             PHAssetMediaType.image.rawValue)
@@ -82,6 +83,7 @@ class PhotoAssetsTableViewController: UITableViewController {
         let result = PHAsset.fetchAssets(with: .image, options: options)
         for index in 0..<result.count {
             let asset = result[index]
+            PhotoController.shared.addPhotoFromLibrary(identifier: asset.localIdentifier, dateCreated: asset.creationDate)
             print(asset.localIdentifier)
             print("\(String(describing: asset.creationDate))")
         }
@@ -91,6 +93,7 @@ class PhotoAssetsTableViewController: UITableViewController {
     @IBAction func fetchAssetsButtonTapped(_ sender: Any) {
 
         fetchAllPhotoAssets(from: startTime, to: endTime)
+        tableView.reloadData()
     }
 }
 
