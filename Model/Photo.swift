@@ -11,7 +11,7 @@ import UIKit
 
 class Photo: Codable {
     
-    var identifier: String?
+    var identifier: String
     var dateCreated: Date
     var photoImageData: Data?
     
@@ -22,7 +22,7 @@ class Photo: Codable {
         return formatter.string(from: dateCreated)
     }
     
-    init(identifier: String?, dateCreated: Date = Date(), photoImageData: Data?) {
+    init(identifier: String, dateCreated: Date = Date(), photoImageData: Data?) {
         
         self.identifier = identifier
         self.dateCreated = dateCreated

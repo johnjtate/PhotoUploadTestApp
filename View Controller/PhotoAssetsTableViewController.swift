@@ -29,6 +29,9 @@ class PhotoAssetsTableViewController: UITableViewController {
         startTime = Date(dateString: "10-01-2018")
         endTime = Date()
 
+        // empty out the source of truth
+        PhotoController.shared.photos = []
+        
         // register a change observer for the photo library (adopting the PHPhotoLibraryChangeObserver protocol in the extension)
         PHPhotoLibrary.shared().register(self)
     }
@@ -111,7 +114,24 @@ class PhotoAssetsTableViewController: UITableViewController {
         }
     }
 
+    // MARK: Navigation
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "toDetailView" {
+            
+            if let detailViewController = segue.destination as? PhotoDetailViewController,
+                let selectedRow = tableView.indexPathForSelectedRow?.row {
+                
+                let photo = PhotoController.shared.photos[selectedRow]
+                detailViewController.photo = photo
+                print("preparing for segue for photo with identifier \(photo.identifier)")
+            }
+        }
+    }
+    
     // MARK: - IBActions
+    
     @IBAction func fetchAssetsButtonTapped(_ sender: Any) {
 
         fetchPhotosInDateRange(startDate: startTime, endDate: endTime)

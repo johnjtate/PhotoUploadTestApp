@@ -20,7 +20,7 @@ class PhotoController {
     // source of truth
     var photos: [Photo] = []
     
-    func addPhotoFromLibrary(identifier: String?, dateCreated: Date?, photoImageData: Data?) {
+    func addPhotoFromLibrary(identifier: String, dateCreated: Date?, photoImageData: Data?) {
         
         let newPhoto = Photo(identifier: identifier, dateCreated: dateCreated ?? Date(), photoImageData: photoImageData)
         photos.append(newPhoto)

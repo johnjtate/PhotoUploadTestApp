@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="3eH-Yc-qIp">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="rhR-1R-4Qv">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -53,6 +54,9 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="xTx-zW-O8L" kind="show" identifier="toDetailView" id="48x-Ix-BLa"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -60,10 +64,82 @@
                             <outlet property="delegate" destination="3eH-Yc-qIp" id="KOa-nD-QcW"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="ppY-er-B4f"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LfI-V4-vaJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-41" y="139"/>
+            <point key="canvasLocation" x="896.79999999999995" y="138.98050974512745"/>
+        </scene>
+        <!--Photo View-->
+        <scene sceneID="wmg-c0-Kth">
+            <objects>
+                <viewController title="Photo View" id="xTx-zW-O8L" customClass="PhotoDetailViewController" customModule="PhotoUploadTestApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="zvl-N7-ofb">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="izz-f7-LM7">
+                                <rect key="frame" x="37.5" y="183.5" width="300" height="300"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="izz-f7-LM7" secondAttribute="height" multiplier="1:1" id="fBX-vB-DWi"/>
+                                </constraints>
+                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="26" translatesAutoresizingMaskIntoConstraints="NO" id="E7L-eU-Ybw">
+                                <rect key="frame" x="37.5" y="503.5" width="300" height="86"/>
+                                <subviews>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="image identifier" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0ef-ys-UwQ">
+                                        <rect key="frame" x="0.0" y="0.0" width="300" height="30"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="creation date" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tmp-P9-Lxr">
+                                        <rect key="frame" x="0.0" y="56" width="300" height="30"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="E7L-eU-Ybw" firstAttribute="top" secondItem="izz-f7-LM7" secondAttribute="bottom" constant="20" id="Ais-Ck-9za"/>
+                            <constraint firstItem="izz-f7-LM7" firstAttribute="centerX" secondItem="zvl-N7-ofb" secondAttribute="centerX" id="Emi-Qv-Cb1"/>
+                            <constraint firstItem="izz-f7-LM7" firstAttribute="width" secondItem="zvl-N7-ofb" secondAttribute="width" multiplier="0.8" id="bYM-6P-K47"/>
+                            <constraint firstItem="izz-f7-LM7" firstAttribute="centerY" secondItem="zvl-N7-ofb" secondAttribute="centerY" id="cKt-WR-fix"/>
+                            <constraint firstItem="E7L-eU-Ybw" firstAttribute="centerX" secondItem="zvl-N7-ofb" secondAttribute="centerX" id="g5g-F7-ogZ"/>
+                            <constraint firstItem="E7L-eU-Ybw" firstAttribute="width" secondItem="zvl-N7-ofb" secondAttribute="width" multiplier="0.8" id="miH-3m-40e"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="F5k-06-FOc"/>
+                    </view>
+                    <connections>
+                        <outlet property="creationDateTextField" destination="tmp-P9-Lxr" id="rrm-Dz-kSi"/>
+                        <outlet property="identifierTextField" destination="0ef-ys-UwQ" id="yCW-J9-s08"/>
+                        <outlet property="photoImageView" destination="izz-f7-LM7" id="xci-nh-hhW"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WSE-G4-tUD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1844" y="138.98050974512745"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Fc0-pi-PG1">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="rhR-1R-4Qv" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="eKB-lw-PVO">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="3eH-Yc-qIp" kind="relationship" relationship="rootViewController" id="K3S-6w-AQ3"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="c09-97-bIa" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-42.399999999999999" y="138.98050974512745"/>
         </scene>
     </scenes>
 </document>
