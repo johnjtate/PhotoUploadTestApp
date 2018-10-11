@@ -27,6 +27,11 @@
                                             <action selector="fetchAssetsButtonTapped:" destination="3eH-Yc-qIp" id="vOD-k5-OKH"/>
                                         </connections>
                                     </barButtonItem>
+                                    <barButtonItem key="rightBarButtonItem" title="View All" id="Mj9-Uy-3nF">
+                                        <connections>
+                                            <segue destination="duV-uN-zkQ" kind="show" id="kly-kl-YoX"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </navigationItem>
                             </items>
                         </navigationBar>
@@ -122,6 +127,52 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WSE-G4-tUD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1844" y="138.98050974512745"/>
+        </scene>
+        <!--Photos to Upload-->
+        <scene sceneID="Vmd-Ij-OeN">
+            <objects>
+                <collectionViewController title="Photos to Upload" id="duV-uN-zkQ" customClass="PhotoGridCollectionViewController" customModule="PhotoUploadTestApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="rzU-VL-d0J">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="koa-d4-fj8">
+                            <size key="itemSize" width="80" height="75"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="photoGridCell" id="URR-oA-IMN" customClass="PhotoGridCollectionViewCell" customModule="PhotoUploadTestApp" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                    <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gBL-TP-oy3">
+                                            <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
+                                        </imageView>
+                                    </subviews>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="gBL-TP-oy3" secondAttribute="bottom" id="dxF-yw-aWR"/>
+                                    <constraint firstAttribute="trailing" secondItem="gBL-TP-oy3" secondAttribute="trailing" id="lEd-95-apY"/>
+                                    <constraint firstItem="gBL-TP-oy3" firstAttribute="leading" secondItem="URR-oA-IMN" secondAttribute="leading" id="uNe-Q0-I3w"/>
+                                    <constraint firstItem="gBL-TP-oy3" firstAttribute="top" secondItem="URR-oA-IMN" secondAttribute="top" id="v9G-i8-baj"/>
+                                </constraints>
+                                <size key="customSize" width="80" height="80"/>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="duV-uN-zkQ" id="isf-zu-3SR"/>
+                            <outlet property="delegate" destination="duV-uN-zkQ" id="EAg-C0-1Yl"/>
+                        </connections>
+                    </collectionView>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JX1-e8-nlz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1844" y="882.90854572713647"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Fc0-pi-PG1">

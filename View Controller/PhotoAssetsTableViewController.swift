@@ -28,9 +28,6 @@ class PhotoAssetsTableViewController: UITableViewController {
         // set start and end times for photo fetches
         startTime = Date(dateString: "10-01-2018")
         endTime = Date()
-
-        // empty out the source of truth
-        PhotoController.shared.photos = []
         
         // register a change observer for the photo library (adopting the PHPhotoLibraryChangeObserver protocol in the extension)
         PHPhotoLibrary.shared().register(self)
@@ -62,11 +59,12 @@ class PhotoAssetsTableViewController: UITableViewController {
     }
     
     // MARK: - Fetch Functions
-    
+
     func fetchPhotosInDateRange(startDate: Date, endDate: Date) {
         
         // empty the source of truth to avoid multiple fetches putting in the same images
         PhotoController.shared.photos = []
+        
         let imageManager = PHImageManager.default()
         
         let requestOptions = PHImageRequestOptions()
@@ -97,12 +95,9 @@ class PhotoAssetsTableViewController: UITableViewController {
                 // request image data
                 imageManager.requestImageData(for: asset, options: requestOptions) { (imageData, string, orientation, info) in
                     
-                    // append the photo image data to the local array
+                    // append the photo image data to the local array and create a photo model object
                     if let imageData = imageData {
                         self.photoImageData += [imageData]
-                    }
-                    // create photo model objects
-                    if let imageData = imageData {
                         PhotoController.shared.addPhotoFromLibrary(identifier: asset.localIdentifier, dateCreated: asset.creationDate, photoImageData: imageData)
                     }
                     
