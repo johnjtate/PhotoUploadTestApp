@@ -33,6 +33,11 @@ class PhotoAssetsTableViewController: UITableViewController {
         PHPhotoLibrary.shared().register(self)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        // necessary to do this because photos can be deleted from the source of truth in the collection view and table view has to reflect this
+        tableView.reloadData()
+    }
+    
     deinit {
         PHPhotoLibrary.shared().unregisterChangeObserver(self)
     }

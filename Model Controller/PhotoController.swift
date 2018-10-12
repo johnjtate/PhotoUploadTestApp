@@ -14,7 +14,7 @@ class PhotoController {
     static let shared = PhotoController()
     // create a singleton
     private init() {
-        loadFromPersistentStorage()
+//        loadFromPersistentStorage()
     }
     
     // source of truth
