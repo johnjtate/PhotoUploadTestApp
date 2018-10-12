@@ -15,12 +15,12 @@ class PhotoGridCollectionViewController: UICollectionViewController {
     // MARK: - Properties
     
     @IBOutlet weak var thumbnailImageView: UIImageView!
-    
-    
+    fileprivate var selectedPhotos = [Photo]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        collectionView.allowsMultipleSelection = true 
+        
     // only need to do this if set up collection view cell programmatically
 //        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
     }
@@ -55,7 +55,7 @@ class PhotoGridCollectionViewController: UICollectionViewController {
         cell?.photo = photo
         return cell ?? UICollectionViewCell()
     }
-
+    
     /*
     // Uncomment this method to specify if the specified item should be selected
     override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
@@ -78,4 +78,17 @@ class PhotoGridCollectionViewController: UICollectionViewController {
     }
     */
 
+    // MARK: - IBActions
+
+    @IBAction func deletePhotosButtonTapped(_ sender: Any) {
+        
+        guard var cellsToDelete = self.collectionView!.indexPathsForSelectedItems, cellsToDelete.count > 0 else { return }
+        cellsToDelete.sort()
+        for indexPath in cellsToDelete.reversed() {
+            PhotoController.shared.photos.remove(at: indexPath.item)
+        }
+        self.collectionView!.performBatchUpdates({
+            self.collectionView!.deleteItems(at: cellsToDelete)
+        })
+    }
 }

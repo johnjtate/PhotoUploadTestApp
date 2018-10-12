@@ -172,6 +172,13 @@
                             <outlet property="delegate" destination="duV-uN-zkQ" id="EAg-C0-1Yl"/>
                         </connections>
                     </collectionView>
+                    <navigationItem key="navigationItem" title="Title" id="Njk-h1-Bgq">
+                        <barButtonItem key="rightBarButtonItem" systemItem="trash" id="feV-jo-46i">
+                            <connections>
+                                <action selector="deletePhotosButtonTapped:" destination="duV-uN-zkQ" id="coI-sS-uhs"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JX1-e8-nlz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
